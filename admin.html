@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Beyond the Horizon</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-space: #050B1A;
+      --horizon-cyan: #00D1B2;
+      --electric-blue: #007BFF;
+      --pure-white: #FFFFFF;
+      --soft-blue-gray: #A8B8D0;
+      --gradient-primary: linear-gradient(135deg, #007BFF, #00D1B2);
+      --danger: #ff4d6d;
+      --success: #00D1B2;
+      --warning: #f5a623;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--deep-space);
+      color: var(--pure-white);
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 30% 20%, rgba(0, 123, 255, 0.12) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(0, 209, 178, 0.08) 0%, transparent 45%),
+                  linear-gradient(160deg, #03070f 0%, #050B1A 40%, #0A1A3A 100%);
+    }
+    .login-stars {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 80px 120px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 160px 60px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 300px 200px, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1.5px 1.5px at 450px 90px, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 520px 280px, rgba(255,255,255,0.45), transparent);
+      background-size: 700px 400px;
+      animation: driftStars 80s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes driftStars {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
+    }
+    .login-glow {
+      position: absolute; width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 123, 255, 0.15) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none; animation: pulseGlow 6s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    }
+    .login-box {
+      position: relative; z-index: 2;
+      background: rgba(10, 26, 58, 0.65);
+      border: 1px solid rgba(0, 123, 255, 0.22);
+      border-radius: 24px;
+      padding: 2.8rem 2.4rem;
+      width: 100%; max-width: 420px;
+      text-align: center;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 80px rgba(0, 123, 255, 0.08);
+      animation: loginIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes loginIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .login-logo-wrap {
+      width: 72px; height: 72px; margin: 0 auto 1.4rem;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(0, 123, 255, 0.2), rgba(0, 209, 178, 0.12));
+      border: 1px solid rgba(0, 123, 255, 0.25);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 30px rgba(0, 123, 255, 0.2);
+      overflow: hidden;
+    }
+    .login-logo-wrap img { height: 42px; width: auto; border-radius: 8px; }
+    .login-box h1 { font-size: 1.45rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .login-box .brand-line {
+      display: block; width: 48px; height: 3px;
+      background: var(--gradient-primary); border-radius: 4px;
+      margin: 0.85rem auto 1rem;
+    }
+    .login-box .subtitle {
+      color: var(--soft-blue-gray); font-size: 0.92rem; margin-bottom: 2rem;
+    }
+    .form-field { margin-bottom: 1rem; text-align: left; }
+    .form-field label {
+      display: block; font-size: 0.78rem; color: var(--soft-blue-gray);
+      margin-bottom: 0.4rem; font-weight: 500;
+    }
+    .form-field input, .form-field select, .form-field textarea {
+      width: 100%; padding: 0.9rem 1.1rem;
+      background: rgba(5, 11, 26, 0.7);
+      border: 1px solid rgba(0, 123, 255, 0.22);
+      border-radius: 12px; color: white;
+      font-family: 'Montserrat', sans-serif; font-size: 0.95rem; outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .form-field input:focus, .form-field select:focus {
+      border-color: var(--electric-blue);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    }
+    .password-wrapper { position: relative; }
+    .password-wrapper input { padding-right: 3rem; }
+    .toggle-password {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--soft-blue-gray);
+      cursor: pointer; font-size: 1.1rem;
+    }
+    .toggle-password:hover { color: var(--horizon-cyan); }
+    .btn-primary {
+      width: 100%; padding: 0.95rem;
+      background: var(--gradient-primary); border: none; border-radius: 12px;
+      color: white; font-weight: 600; font-size: 0.98rem; cursor: pointer;
+      font-family: 'Montserrat', sans-serif; margin-top: 0.6rem;
+      box-shadow: 0 6px 24px rgba(0, 123, 255, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(0, 123, 255, 0.45);
+    }
+    .btn-primary:disabled {
+      opacity: 0.55; cursor: not-allowed; transform: none;
+    }
+    .login-error {
+      color: var(--danger); font-size: 0.85rem; margin-top: 1rem;
+      display: none; padding: 0.6rem 0.9rem;
+      background: rgba(255, 77, 109, 0.1);
+      border: 1px solid rgba(255, 77, 109, 0.25);
+      border-radius: 10px;
+    }
+    .login-lock {
+      color: var(--warning); font-size: 0.85rem; margin-top: 0.8rem;
+      display: none; padding: 0.6rem 0.9rem;
+      background: rgba(245, 166, 35, 0.1);
+      border: 1px solid rgba(245, 166, 35, 0.3);
+      border-radius: 10px;
+    }
+    .login-footer {
+      margin-top: 1.8rem; padding-top: 1.2rem;
+      border-top: 1px solid rgba(0, 123, 255, 0.12);
+      font-size: 0.75rem; color: rgba(168, 184, 208, 0.55);
+    }
+    .login-footer span { color: var(--horizon-cyan); font-weight: 500; }
+    .security-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 1rem; font-size: 0.72rem; color: rgba(168, 184, 208, 0.5);
+    }
+
+    /* DASHBOARD */
+    .dashboard { display: none; min-height: 100vh; }
+    .dashboard.active { display: block; }
+    .admin-header {
+      background: rgba(5, 11, 26, 0.95);
+      border-bottom: 1px solid rgba(0, 123, 255, 0.15);
+      padding: 1rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px); flex-wrap: wrap; gap: 0.8rem;
+    }
+    .admin-header .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 1.05rem;
+    }
+    .admin-header .logo img { height: 34px; border-radius: 8px; }
+    .user-info { font-size: 0.82rem; color: var(--soft-blue-gray); }
+    .user-info strong { color: var(--horizon-cyan); }
+    .admin-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .btn-admin {
+      padding: 0.5rem 0.9rem; border-radius: 10px; border: none;
+      font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+      font-weight: 600; cursor: pointer;
+    }
+    .btn-refresh { background: rgba(0, 123, 255, 0.15); color: var(--electric-blue); border: 1px solid rgba(0, 123, 255, 0.3); }
+    .btn-export { background: rgba(0, 209, 178, 0.12); color: var(--horizon-cyan); border: 1px solid rgba(0, 209, 178, 0.3); }
+    .btn-users { background: rgba(0, 123, 255, 0.12); color: var(--electric-blue); border: 1px solid rgba(0, 123, 255, 0.3); }
+    .btn-trash { background: rgba(245, 166, 35, 0.12); color: var(--warning); border: 1px solid rgba(245, 166, 35, 0.3); }
+    .btn-logout { background: rgba(255, 77, 109, 0.15); color: var(--danger); border: 1px solid rgba(255, 77, 109, 0.3); }
+    .admin-main { padding: 2.2rem 5%; max-width: 1200px; margin: 0 auto; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: rgba(10, 26, 58, 0.6);
+      border: 1px solid rgba(0, 123, 255, 0.15);
+      border-radius: 14px; padding: 1.2rem;
+    }
+    .stat-card h3 { font-size: 0.78rem; color: var(--soft-blue-gray); font-weight: 500; margin-bottom: 0.3rem; }
+    .stat-card p { font-size: 1.6rem; font-weight: 700; color: var(--horizon-cyan); }
+    .stat-card.nao-lidos p { color: var(--warning); }
+    .chart-section {
+      background: rgba(10, 26, 58, 0.6);
+      border: 1px solid rgba(0, 123, 255, 0.15);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 1.8rem;
+    }
+    .chart-title { font-size: 1rem; font-weight: 600; margin-bottom: 1.2rem; }
+    .chart-bars {
+      display: flex; align-items: flex-end; gap: 0.6rem;
+      height: 180px; padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0, 123, 255, 0.15);
+    }
+    .chart-bar-group {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; height: 100%; justify-content: flex-end; min-width: 0;
+    }
+    .chart-bar {
+      width: 100%; max-width: 42px;
+      background: var(--gradient-primary);
+      border-radius: 8px 8px 4px 4px; min-height: 4px; position: relative;
+    }
+    .chart-bar-value {
+      position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+      font-size: 0.75rem; font-weight: 600; color: var(--horizon-cyan);
+    }
+    .chart-bar-label {
+      margin-top: 0.5rem; font-size: 0.7rem;
+      color: var(--soft-blue-gray); text-transform: capitalize;
+    }
+    .chart-empty {
+      width: 100%; text-align: center; color: var(--soft-blue-gray);
+      padding: 2rem; font-size: 0.9rem;
+    }
+    .filtros {
+      display: flex; flex-wrap: wrap; gap: 0.7rem;
+      margin-bottom: 1.2rem; align-items: center;
+    }
+    .search-box { flex: 1; min-width: 200px; position: relative; }
+    .search-box input {
+      width: 100%; padding: 0.7rem 1rem 0.7rem 2.4rem;
+      background: rgba(10, 26, 58, 0.6);
+      border: 1px solid rgba(0, 123, 255, 0.2);
+      border-radius: 12px; color: white;
+      font-family: 'Montserrat', sans-serif; font-size: 0.9rem; outline: none;
+    }
+    .search-box::before {
+      content: '🔍'; position: absolute; left: 11px; top: 50%;
+      transform: translateY(-50%); font-size: 0.85rem; opacity: 0.7;
+    }
+    .filtro-btn, .sort-select {
+      padding: 0.5rem 0.85rem;
+      background: rgba(10, 26, 58, 0.6);
+      border: 1px solid rgba(0, 123, 255, 0.2);
+      border-radius: 10px; color: var(--soft-blue-gray);
+      font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+      font-weight: 500; cursor: pointer;
+    }
+    .filtro-btn.active {
+      background: rgba(0, 123, 255, 0.2);
+      border-color: var(--electric-blue); color: var(--horizon-cyan);
+    }
+    .sort-select { color: white; outline: none; }
+    .section-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.3rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .section-title h2 { font-size: 1.3rem; }
+    .resultados-info { font-size: 0.85rem; color: var(--soft-blue-gray); }
+    .pedidos-list { display: flex; flex-direction: column; gap: 1.1rem; }
+    .pedido-card {
+      background: rgba(10, 26, 58, 0.55);
+      border: 1px solid rgba(0, 123, 255, 0.12);
+      border-radius: 16px; padding: 1.4rem; position: relative;
+    }
+    .pedido-card.nao-lido {
+      border-color: rgba(245, 166, 35, 0.4);
+      background: rgba(245, 166, 35, 0.06);
+    }
+    .pedido-card.nao-lido::before {
+      content: ''; position: absolute;
+      left: 0; top: 14px; bottom: 14px; width: 3px;
+      background: var(--warning); border-radius: 0 4px 4px 0;
+    }
+    .pedido-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 0.9rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .pedido-nome { font-size: 1.1rem; font-weight: 600; }
+    .pedido-data { font-size: 0.78rem; color: var(--soft-blue-gray); }
+    .pedido-badges { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .badge {
+      display: inline-block; padding: 0.22rem 0.65rem;
+      border-radius: 50px; font-size: 0.7rem; font-weight: 600;
+    }
+    .badge-servico { background: rgba(0, 209, 178, 0.15); color: var(--horizon-cyan); }
+    .badge-novo { background: rgba(245, 166, 35, 0.2); color: var(--warning); }
+    .badge-andamento { background: rgba(0, 123, 255, 0.2); color: var(--electric-blue); }
+    .badge-concluido { background: rgba(0, 209, 178, 0.2); color: var(--success); }
+    .badge-arquivado { background: rgba(168, 184, 208, 0.15); color: var(--soft-blue-gray); }
+    .pedido-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 0.8rem;
+    }
+    .pedido-field label {
+      display: block; font-size: 0.7rem; color: var(--soft-blue-gray);
+      margin-bottom: 0.15rem; text-transform: uppercase; letter-spacing: 0.4px;
+    }
+    .pedido-field p { font-size: 0.9rem; word-break: break-word; }
+    .pedido-mensagem, .pedido-notas {
+      margin-top: 0.9rem; padding-top: 0.9rem;
+      border-top: 1px solid rgba(0, 123, 255, 0.1);
+    }
+    .nota-textarea {
+      width: 100%; min-height: 60px; padding: 0.7rem;
+      background: rgba(5, 11, 26, 0.5);
+      border: 1px solid rgba(0, 123, 255, 0.2);
+      border-radius: 10px; color: white;
+      font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
+      outline: none; resize: vertical; margin-top: 0.3rem;
+    }
+    .pedido-actions {
+      margin-top: 1rem; display: flex; gap: 0.45rem;
+      flex-wrap: wrap; align-items: center;
+    }
+    .status-select {
+      padding: 0.35rem 0.6rem;
+      background: rgba(5, 11, 26, 0.6);
+      border: 1px solid rgba(0, 123, 255, 0.25);
+      border-radius: 8px; color: white;
+      font-family: 'Montserrat', sans-serif; font-size: 0.78rem;
+      outline: none; cursor: pointer;
+    }
+    .btn-action {
+      padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.75rem;
+      font-family: 'Montserrat', sans-serif; cursor: pointer;
+      border: 1px solid transparent; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .btn-lido { background: rgba(0, 123, 255, 0.12); color: var(--electric-blue); border-color: rgba(0, 123, 255, 0.25); }
+    .btn-whatsapp { background: rgba(37, 211, 102, 0.15); color: #25D366; border-color: rgba(37, 211, 102, 0.3); }
+    .btn-delete { background: rgba(255, 77, 109, 0.12); color: var(--danger); border-color: rgba(255, 77, 109, 0.25); }
+    .btn-restore { background: rgba(0, 209, 178, 0.12); color: var(--success); border-color: rgba(0, 209, 178, 0.3); }
+    .empty-state { text-align: center; padding: 3.5rem 2rem; color: var(--soft-blue-gray); }
+    .empty-state p { font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .empty-state span { font-size: 0.85rem; }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0A1A3A; border: 1px solid rgba(0, 123, 255, 0.3);
+      border-radius: 12px; padding: 0.9rem 1.3rem;
+      display: flex; align-items: center; gap: 1rem;
+      z-index: 3000; opacity: 0; transition: all 0.35s ease;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast button {
+      background: var(--horizon-cyan); color: #050B1A; border: none;
+      padding: 0.35rem 0.8rem; border-radius: 8px; font-weight: 600;
+      font-size: 0.8rem; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.7); z-index: 2000;
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #0A1A3A; border: 1px solid rgba(0, 123, 255, 0.25);
+      border-radius: 18px; width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto; padding: 1.8rem;
+    }
+    .modal h2 { font-size: 1.25rem; margin-bottom: 1.2rem; }
+    .modal-close {
+      float: right; background: none; border: none;
+      color: var(--soft-blue-gray); font-size: 1.4rem; cursor: pointer;
+    }
+    .user-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.85rem 0; border-bottom: 1px solid rgba(0, 123, 255, 0.1);
+      gap: 0.8rem; flex-wrap: wrap;
+    }
+    .role-admin { background: rgba(0, 209, 178, 0.15); color: var(--horizon-cyan); padding: 0.2rem 0.55rem; border-radius: 50px; font-size: 0.75rem; }
+    .role-func { background: rgba(0, 123, 255, 0.15); color: var(--electric-blue); padding: 0.2rem 0.55rem; border-radius: 50px; font-size: 0.75rem; }
+    .btn-sm-danger {
+      padding: 0.3rem 0.65rem;
+      background: rgba(255, 77, 109, 0.15); color: var(--danger);
+      border: 1px solid rgba(255, 77, 109, 0.3); border-radius: 8px;
+      font-size: 0.75rem; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    }
+    @media (max-width: 600px) {
+      .admin-header { flex-direction: column; align-items: flex-start; }
+      .filtros { flex-direction: column; align-items: stretch; }
+      .login-box { padding: 2.2rem 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-screen" id="login-screen">
+    <div class="login-stars"></div>
+    <div class="login-glow"></div>
+    <div class="login-box">
+      <div class="login-logo-wrap">
+        <img src="logo.png" alt="Beyond the Horizon">
+      </div>
+      <h1>Beyond the Horizon</h1>
+      <span class="brand-line"></span>
+      <p class="subtitle">Painel Administrativo</p>
+
+      <div class="form-field">
+        <label>Usuário</label>
+        <input type="text" id="login-user" placeholder="Digite seu usuário" autofocus autocomplete="username">
+      </div>
+      <div class="form-field">
+        <label>Senha</label>
+        <div class="password-wrapper">
+          <input type="password" id="login-pass" placeholder="Digite sua senha" autocomplete="current-password">
+          <button type="button" class="toggle-password" id="toggle-password" title="Mostrar senha">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-login" onclick="fazerLogin()">Entrar no painel</button>
+      <p class="login-error" id="login-error">Usuário ou senha incorretos.</p>
+      <p class="login-lock" id="login-lock">Muitas tentativas. Aguarde <span id="lock-timer">60</span>s.</p>
+
+      <div class="security-badge">🔒 Sessão protegida · senhas criptografadas</div>
+      <div class="login-footer">
+        Acesso restrito · <span>Beyond the Horizon</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <header class="admin-header">
+      <div class="logo">
+        <img src="logo.png" alt="Logo">
+        <span>Admin</span>
+      </div>
+      <div class="admin-actions">
+        <span class="user-info">Olá, <strong id="user-nome-logado"></strong> · <span id="user-role-logado"></span></span>
+        <button class="btn-admin btn-users admin-only" onclick="abrirModalUsuarios()">Usuários</button>
+        <button class="btn-admin btn-trash admin-only" onclick="toggleLixeira()" id="btn-lixeira">Lixeira</button>
+        <button class="btn-admin btn-export admin-only" onclick="exportarJSON()">JSON</button>
+        <button class="btn-admin btn-export admin-only" onclick="exportarCSV()">CSV</button>
+        <button class="btn-admin btn-refresh" onclick="carregarPedidos()">Atualizar</button>
+        <button class="btn-admin btn-logout" onclick="fazerLogout()">Sair</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="stats">
+        <div class="stat-card"><h3>Total</h3><p id="stat-total">0</p></div>
+        <div class="stat-card nao-lidos"><h3>Não lidos</h3><p id="stat-nao-lidos">0</p></div>
+        <div class="stat-card"><h3>Hoje</h3><p id="stat-hoje">0</p></div>
+        <div class="stat-card"><h3>Este mês</h3><p id="stat-mes">0</p></div>
+      </div>
+      <div class="chart-section" id="chart-section">
+        <h3 class="chart-title">Pedidos por mês</h3>
+        <div class="chart-bars" id="chart-bars"></div>
+      </div>
+      <div class="filtros">
+        <div class="search-box">
+          <input type="text" id="busca" placeholder="Buscar por nome, e-mail ou serviço..." oninput="aplicarFiltros()">
+        </div>
+        <button class="filtro-btn active" data-filtro="todos" onclick="setFiltroData(this)">Todos</button>
+        <button class="filtro-btn" data-filtro="hoje" onclick="setFiltroData(this)">Hoje</button>
+        <button class="filtro-btn" data-filtro="semana" onclick="setFiltroData(this)">Esta semana</button>
+        <button class="filtro-btn" data-filtro="mes" onclick="setFiltroData(this)">Este mês</button>
+        <select class="sort-select" id="ordenacao" onchange="aplicarFiltros()">
+          <option value="recentes">Mais recentes</option>
+          <option value="antigos">Mais antigos</option>
+          <option value="nome">Por nome (A-Z)</option>
+          <option value="servico">Por serviço</option>
+        </select>
+      </div>
+      <div class="section-title">
+        <h2 id="titulo-lista">Clientes / Pedidos</h2>
+        <span class="resultados-info" id="resultados-info"></span>
+      </div>
+      <div class="pedidos-list" id="pedidos-list"></div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">
+    <span>Pedido movido para a lixeira</span>
+    <button onclick="desfazerExclusao()">Desfazer</button>
+  </div>
+
+  <div class="modal-overlay" id="modal-usuarios">
+    <div class="modal">
+      <button class="modal-close" onclick="fecharModalUsuarios()">×</button>
+      <h2>Gerenciar usuários</h2>
+      <div id="users-list"></div>
+      <div style="margin-top:1.5rem">
+        <h3 style="font-size:1rem;margin-bottom:0.9rem">Novo usuário</h3>
+        <div class="form-field"><label>Nome</label><input type="text" id="new-nome" placeholder="Nome"></div>
+        <div class="form-field"><label>Usuário</label><input type="text" id="new-user" placeholder="login"></div>
+        <div class="form-field"><label>Senha</label><input type="password" id="new-pass" placeholder="Mín. 6 caracteres"></div>
+        <div class="form-field">
+          <label>Tipo</label>
+          <select id="new-role">
+            <option value="funcionario">Funcionário</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="criarUsuario()">Criar usuário</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_PEDIDOS = 'bth_pedidos';
+    const STORAGE_LIXEIRA = 'bth_lixeira';
+    const STORAGE_USERS = 'bth_users_v2';
+    const STORAGE_SESSION = 'bth_session_v2';
+    const STORAGE_LOCK = 'bth_login_lock';
+
+    const MAX_TENTATIVAS = 5;
+    const LOCK_SEGUNDOS = 60;
+    const SESSAO_HORAS = 8;
+    const DEFAULT_USER = 'admin';
+    const DEFAULT_PASS = 'beyond2026';
+
+    let usuarioLogado = null;
+    let filtroDataAtual = 'todos';
+    let todosPedidos = [];
+    let mostrandoLixeira = false;
+    let ultimoExcluido = null;
+    let toastTimer = null;
+    let lockInterval = null;
+
+    // ========== CRIPTOGRAFIA ==========
+    function gerarSalt() {
+      const arr = new Uint8Array(16);
+      crypto.getRandomValues(arr);
+      return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function hashSenha(senha, salt) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(salt + senha);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verificarSenha(senha, salt, hashArmazenado) {
+      const hash = await hashSenha(senha, salt);
+      return hash === hashArmazenado;
+    }
+
+    function gerarToken() {
+      const arr = new Uint8Array(32);
+      crypto.getRandomValues(arr);
+      return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // ========== USUÁRIOS ==========
+    async function inicializarUsuarios() {
+      let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+      if (users.length === 0) {
+        const salt = gerarSalt();
+        const hash = await hashSenha(DEFAULT_PASS, salt);
+        users = [{
+          id: 1,
+          nome: 'Administrador',
+          user: DEFAULT_USER,
+          salt,
+          hash,
+          role: 'admin'
+        }];
+        localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+      }
+      // Migração: remove senhas em texto puro se existirem de versão antiga
+      users = users.map(u => {
+        if (u.senha && !u.hash) {
+          // usuário legado — será recriado no próximo login com hash
+          return u;
+        }
+        const { senha, ...safe } = u;
+        return safe;
+      });
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    }
+
+    // ========== LOCK ==========
+    function getLock() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_LOCK) || '{}');
+      } catch (e) { return {}; }
+    }
+
+    function setLock(data) {
+      localStorage.setItem(STORAGE_LOCK, JSON.stringify(data));
+    }
+
+    function estaBloqueado() {
+      const lock = getLock();
+      if (!lock.until) return false;
+      if (Date.now() < lock.until) return true;
+      setLock({ tentativas: 0, until: null });
+      return false;
+    }
+
+    function segundosRestantesLock() {
+      const lock = getLock();
+      if (!lock.until) return 0;
+      return Math.max(0, Math.ceil((lock.until - Date.now()) / 1000));
+    }
+
+    function registrarFalha() {
+      const lock = getLock();
+      const tentativas = (lock.tentativas || 0) + 1;
+      if (tentativas >= MAX_TENTATIVAS) {
+        setLock({ tentativas, until: Date.now() + LOCK_SEGUNDOS * 1000 });
+        iniciarTimerLock();
+      } else {
+        setLock({ tentativas, until: null });
+      }
+    }
+
+    function limparFalhas() {
+      setLock({ tentativas: 0, until: null });
+    }
+
+    function iniciarTimerLock() {
+      const btn = document.getElementById('btn-login');
+      const lockEl = document.getElementById('login-lock');
+      const timerEl = document.getElementById('lock-timer');
+      const errorEl = document.getElementById('login-error');
+
+      errorEl.style.display = 'none';
+      lockEl.style.display = 'block';
+      btn.disabled = true;
+
+      if (lockInterval) clearInterval(lockInterval);
+      lockInterval = setInterval(() => {
+        const s = segundosRestantesLock();
+        timerEl.textContent = s;
+        if (s <= 0) {
+          clearInterval(lockInterval);
+          lockEl.style.display = 'none';
+          btn.disabled = false;
+          limparFalhas();
+        }
+      }, 500);
+    }
+
+    function checarLockAoCarregar() {
+      if (estaBloqueado()) iniciarTimerLock();
+    }
+
+    // ========== SESSÃO ==========
+    function salvarSessao(user) {
+      const session = {
+        token: gerarToken(),
+        userId: user.id,
+        nome: user.nome,
+        user: user.user,
+        role: user.role,
+        expira: Date.now() + SESSAO_HORAS * 60 * 60 * 1000
+      };
+      sessionStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
+      return session;
+    }
+
+    function lerSessao() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_SESSION);
+        if (!raw) return null;
+        const session = JSON.parse(raw);
+        if (!session.expira || Date.now() > session.expira) {
+          sessionStorage.removeItem(STORAGE_SESSION);
+          return null;
+        }
+        return session;
+      } catch (e) {
+        sessionStorage.removeItem(STORAGE_SESSION);
+        return null;
+      }
+    }
+
+    function limparSessao() {
+      sessionStorage.removeItem(STORAGE_SESSION);
+      usuarioLogado = null;
+    }
+
+    // ========== BOOT ==========
+    (async function boot() {
+      await inicializarUsuarios();
+      checarLockAoCarregar();
+      const sessao = lerSessao();
+      if (sessao) {
+        usuarioLogado = sessao;
+        mostrarDashboard();
+      }
+    })();
+
+    document.getElementById('toggle-password').addEventListener('click', function () {
+      const input = document.getElementById('login-pass');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      this.textContent = input.type === 'password' ? '👁' : '🙈';
+    });
+
+    async function fazerLogin() {
+      if (estaBloqueado()) {
+        iniciarTimerLock();
+        return;
+      }
+
+      const userInput = document.getElementById('login-user').value.trim().toLowerCase();
+      const senha = document.getElementById('login-pass').value;
+      const errorEl = document.getElementById('login-error');
+      const btn = document.getElementById('btn-login');
+
+      if (!userInput || !senha) {
+        errorEl.textContent = 'Preencha usuário e senha.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Verificando...';
+
+      try {
+        let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+        let encontrado = users.find(u => u.user.toLowerCase() === userInput);
+
+        // Migração de usuário legado (senha em texto)
+        if (encontrado && encontrado.senha && !encontrado.hash) {
+          if (encontrado.senha === senha) {
+            const salt = gerarSalt();
+            const hash = await hashSenha(senha, salt);
+            users = users.map(u => {
+              if (u.id === encontrado.id) {
+                const { senha: _, ...rest } = u;
+                return { ...rest, salt, hash };
+              }
+              return u;
+            });
+            localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+            encontrado = users.find(u => u.id === encontrado.id);
+          } else {
+            encontrado = null;
+          }
+        } else if (encontrado && encontrado.hash && encontrado.salt) {
+          const ok = await verificarSenha(senha, encontrado.salt, encontrado.hash);
+          if (!ok) encontrado = null;
+        } else {
+          encontrado = null;
+        }
+
+        if (encontrado) {
+          limparFalhas();
+          errorEl.style.display = 'none';
+          usuarioLogado = salvarSessao(encontrado);
+          mostrandoLixeira = false;
+          document.getElementById('login-pass').value = '';
+          mostrarDashboard();
+        } else {
+          registrarFalha();
+          errorEl.textContent = 'Usuário ou senha incorretos.';
+          errorEl.style.display = 'block';
+          document.getElementById('login-pass').value = '';
+          if (estaBloqueado()) iniciarTimerLock();
+        }
+      } finally {
+        if (!estaBloqueado()) {
+          btn.disabled = false;
+          btn.textContent = 'Entrar no painel';
+        }
+      }
+    }
+
+    document.getElementById('login-pass').addEventListener('keypress', e => {
+      if (e.key === 'Enter') fazerLogin();
+    });
+    document.getElementById('login-user').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('login-pass').focus();
+    });
+
+    function fazerLogout() {
+      limparSessao();
+      mostrandoLixeira = false;
+      document.getElementById('dashboard').classList.remove('active');
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('login-user').value = '';
+      document.getElementById('login-pass').value = '';
+      document.getElementById('login-error').style.display = 'none';
+    }
+
+    function isAdmin() {
+      return usuarioLogado && usuarioLogado.role === 'admin';
+    }
+
+    function exigirSessao() {
+      const s = lerSessao();
+      if (!s) {
+        fazerLogout();
+        return false;
+      }
+      usuarioLogado = s;
+      return true;
+    }
+
+    function mostrarDashboard() {
+      if (!exigirSessao()) return;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').classList.add('active');
+      document.getElementById('user-nome-logado').textContent = usuarioLogado.nome;
+      document.getElementById('user-role-logado').textContent =
+        usuarioLogado.role === 'admin' ? 'Administrador' : 'Funcionário';
+      document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = isAdmin() ? '' : 'none';
+      });
+      mostrandoLixeira = false;
+      document.getElementById('btn-lixeira').textContent = 'Lixeira';
+      document.getElementById('titulo-lista').textContent = 'Clientes / Pedidos';
+      document.getElementById('chart-section').style.display = 'block';
+      carregarPedidos();
+    }
+
+    // ========== USUÁRIOS (ADMIN) ==========
+    function abrirModalUsuarios() {
+      if (!isAdmin()) return;
+      renderizarUsuarios();
+      document.getElementById('modal-usuarios').classList.add('open');
+    }
+    function fecharModalUsuarios() {
+      document.getElementById('modal-usuarios').classList.remove('open');
+    }
+
+    function renderizarUsuarios() {
+      const users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+      document.getElementById('users-list').innerHTML = users.map(u => `
+        <div class="user-item">
+          <div>
+            <strong>${escapeHtml(u.nome)}</strong>
+            <div style="font-size:0.8rem;color:var(--soft-blue-gray)">@${escapeHtml(u.user)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="${u.role === 'admin' ? 'role-admin' : 'role-func'}">${u.role === 'admin' ? 'Admin' : 'Funcionário'}</span>
+            ${u.user !== 'admin' ? `<button class="btn-sm-danger" onclick="excluirUsuario(${u.id})">Excluir</button>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function criarUsuario() {
+      if (!isAdmin()) return;
+      const nome = document.getElementById('new-nome').value.trim();
+      const user = document.getElementById('new-user').value.trim().toLowerCase();
+      const senha = document.getElementById('new-pass').value;
+      const role = document.getElementById('new-role').value;
+
+      if (!nome || !user || !senha) return alert('Preencha todos os campos.');
+      if (senha.length < 6) return alert('A senha deve ter no mínimo 6 caracteres.');
+
+      let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+      if (users.some(u => u.user.toLowerCase() === user)) return alert('Usuário já existe.');
+
+      const salt = gerarSalt();
+      const hash = await hashSenha(senha, salt);
+      users.push({ id: Date.now(), nome, user, salt, hash, role });
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+
+      document.getElementById('new-nome').value = '';
+      document.getElementById('new-user').value = '';
+      document.getElementById('new-pass').value = '';
+      renderizarUsuarios();
+      alert('Usuário criado com senha criptografada.');
+    }
+
+    function excluirUsuario(id) {
+      if (!isAdmin()) return;
+      if (!confirm('Excluir este usuário?')) return;
+      let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+      users = users.filter(u => u.id !== id);
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+      renderizarUsuarios();
+    }
+
+    // ========== RESTANTE (pedidos, etc.) ==========
+    function toggleLixeira() {
+      if (!exigirSessao()) return;
+      mostrandoLixeira = !mostrandoLixeira;
+      document.getElementById('btn-lixeira').textContent = mostrandoLixeira ? 'Voltar aos pedidos' : 'Lixeira';
+      document.getElementById('titulo-lista').textContent = mostrandoLixeira ? 'Lixeira' : 'Clientes / Pedidos';
+      document.getElementById('chart-section').style.display = mostrandoLixeira ? 'none' : 'block';
+      document.getElementById('busca').value = '';
+      filtroDataAtual = 'todos';
+      document.querySelectorAll('.filtro-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.filtro === 'todos');
+      });
+      carregarPedidos();
+    }
+
+    function moverParaLixeira(id) {
+      if (!isAdmin()) return;
+      let pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      const pedido = pedidos.find(p => p.id === id);
+      if (!pedido) return;
+      pedidos = pedidos.filter(p => p.id !== id);
+      localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+      let lixeira = JSON.parse(localStorage.getItem(STORAGE_LIXEIRA) || '[]');
+      lixeira.unshift(pedido);
+      localStorage.setItem(STORAGE_LIXEIRA, JSON.stringify(lixeira));
+      ultimoExcluido = pedido;
+      mostrarToast();
+      carregarPedidos();
+    }
+
+    function restaurarDaLixeira(id) {
+      if (!isAdmin()) return;
+      let lixeira = JSON.parse(localStorage.getItem(STORAGE_LIXEIRA) || '[]');
+      const pedido = lixeira.find(p => p.id === id);
+      if (!pedido) return;
+      lixeira = lixeira.filter(p => p.id !== id);
+      localStorage.setItem(STORAGE_LIXEIRA, JSON.stringify(lixeira));
+      let pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      pedidos.unshift(pedido);
+      localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+      carregarPedidos();
+    }
+
+    function excluirDefinitivo(id) {
+      if (!isAdmin()) return;
+      if (!confirm('Excluir definitivamente?')) return;
+      let lixeira = JSON.parse(localStorage.getItem(STORAGE_LIXEIRA) || '[]');
+      lixeira = lixeira.filter(p => p.id !== id);
+      localStorage.setItem(STORAGE_LIXEIRA, JSON.stringify(lixeira));
+      carregarPedidos();
+    }
+
+    function desfazerExclusao() {
+      if (!ultimoExcluido) return;
+      let lixeira = JSON.parse(localStorage.getItem(STORAGE_LIXEIRA) || '[]');
+      lixeira = lixeira.filter(p => p.id !== ultimoExcluido.id);
+      localStorage.setItem(STORAGE_LIXEIRA, JSON.stringify(lixeira));
+      let pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      pedidos.unshift(ultimoExcluido);
+      localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+      ultimoExcluido = null;
+      esconderToast();
+      carregarPedidos();
+    }
+
+    function mostrarToast() {
+      document.getElementById('toast').classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(esconderToast, 5000);
+    }
+    function esconderToast() {
+      document.getElementById('toast').classList.remove('show');
+    }
+
+    function salvarNota(id, textarea) {
+      const key = mostrandoLixeira ? STORAGE_LIXEIRA : STORAGE_PEDIDOS;
+      let lista = JSON.parse(localStorage.getItem(key) || '[]');
+      lista = lista.map(p => { if (p.id === id) p.nota = textarea.value; return p; });
+      localStorage.setItem(key, JSON.stringify(lista));
+    }
+
+    function atualizarStatus(id, novoStatus) {
+      if (!isAdmin()) return;
+      let pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      pedidos = pedidos.map(p => {
+        if (p.id === id) {
+          p.status = novoStatus;
+          if (novoStatus !== 'novo') p.lido = true;
+        }
+        return p;
+      });
+      localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+      carregarPedidos();
+    }
+
+    function marcarComoLido(id) {
+      let pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      pedidos = pedidos.map(p => { if (p.id === id) p.lido = true; return p; });
+      localStorage.setItem(STORAGE_PEDIDOS, JSON.stringify(pedidos));
+      carregarPedidos();
+    }
+
+    function setFiltroData(btn) {
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filtroDataAtual = btn.dataset.filtro;
+      aplicarFiltros();
+    }
+
+    function parseDataPedido(dataStr) {
+      if (!dataStr) return null;
+      try {
+        const parte = String(dataStr).split(',')[0].trim();
+        const [dia, mes, ano] = parte.split('/').map(Number);
+        if (!dia || !mes || !ano) return null;
+        return new Date(ano, mes - 1, dia);
+      } catch (e) { return null; }
+    }
+
+    function filtrarPorData(pedido) {
+      if (filtroDataAtual === 'todos') return true;
+      const dataPedido = parseDataPedido(pedido.data);
+      if (!dataPedido) return true;
+      const agora = new Date();
+      const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+      if (filtroDataAtual === 'hoje') return dataPedido.getTime() === hoje.getTime();
+      if (filtroDataAtual === 'semana') {
+        const inicio = new Date(hoje);
+        inicio.setDate(hoje.getDate() - hoje.getDay());
+        return dataPedido >= inicio && dataPedido <= agora;
+      }
+      if (filtroDataAtual === 'mes') {
+        return dataPedido.getMonth() === agora.getMonth() && dataPedido.getFullYear() === agora.getFullYear();
+      }
+      return true;
+    }
+
+    function filtrarPorBusca(pedido) {
+      const termo = (document.getElementById('busca').value || '').trim().toLowerCase();
+      if (!termo) return true;
+      return [pedido.nome, pedido.email, pedido.servico, pedido.mensagem, pedido.telefone, pedido.nota]
+        .some(v => String(v || '').toLowerCase().includes(termo));
+    }
+
+    function ordenarPedidos(lista) {
+      const ordem = document.getElementById('ordenacao').value;
+      const copy = [...lista];
+      if (ordem === 'recentes') copy.sort((a, b) => (b.id || 0) - (a.id || 0));
+      if (ordem === 'antigos') copy.sort((a, b) => (a.id || 0) - (b.id || 0));
+      if (ordem === 'nome') copy.sort((a, b) => String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR'));
+      if (ordem === 'servico') copy.sort((a, b) => String(a.servico || '').localeCompare(String(b.servico || ''), 'pt-BR'));
+      return copy;
+    }
+
+    function aplicarFiltros() {
+      let filtrados = todosPedidos.filter(p => filtrarPorData(p) && filtrarPorBusca(p));
+      filtrados = ordenarPedidos(filtrados);
+      renderizarPedidos(filtrados);
+    }
+
+    function renderizarGrafico() {
+      const pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      const container = document.getElementById('chart-bars');
+      if (!pedidos.length) {
+        container.innerHTML = '<div class="chart-empty">Nenhum pedido ainda para exibir no gráfico.</div>';
+        return;
+      }
+      const agora = new Date();
+      const meses = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(agora.getFullYear(), agora.getMonth() - i, 1);
+        meses.push({
+          key: `${d.getFullYear()}-${d.getMonth()}`,
+          label: d.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', ''),
+          count: 0
+        });
+      }
+      pedidos.forEach(p => {
+        const data = parseDataPedido(p.data);
+        if (!data) return;
+        const key = `${data.getFullYear()}-${data.getMonth()}`;
+        const item = meses.find(m => m.key === key);
+        if (item) item.count++;
+      });
+      const max = Math.max(...meses.map(m => m.count), 1);
+      container.innerHTML = meses.map(m => {
+        const altura = Math.max((m.count / max) * 100, m.count > 0 ? 8 : 3);
+        return `
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height: ${altura}%">
+              ${m.count > 0 ? `<span class="chart-bar-value">${m.count}</span>` : ''}
+            </div>
+            <div class="chart-bar-label">${m.label}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function carregarPedidos() {
+      if (!exigirSessao()) return;
+      const key = mostrandoLixeira ? STORAGE_LIXEIRA : STORAGE_PEDIDOS;
+      let raw = [];
+      try {
+        raw = JSON.parse(localStorage.getItem(key) || '[]');
+        if (!Array.isArray(raw)) raw = [];
+      } catch (e) { raw = []; }
+
+      todosPedidos = raw.map(p => ({
+        ...p,
+        id: p.id || Date.now(),
+        status: p.status || 'novo',
+        lido: p.lido === true,
+        nota: p.nota || ''
+      }));
+
+      const ativos = (() => {
+        try {
+          const a = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+          return Array.isArray(a) ? a : [];
+        } catch (e) { return []; }
+      })();
+
+      document.getElementById('stat-total').textContent = ativos.length;
+      document.getElementById('stat-nao-lidos').textContent = ativos.filter(p => !p.lido).length;
+
+      const hojeStr = new Date().toLocaleDateString('pt-BR');
+      const mesAtual = new Date().getMonth();
+      const anoAtual = new Date().getFullYear();
+      let countHoje = 0, countMes = 0;
+      ativos.forEach(p => {
+        if (p.data && String(p.data).includes(hojeStr)) countHoje++;
+        const d = parseDataPedido(p.data);
+        if (d && d.getMonth() === mesAtual && d.getFullYear() === anoAtual) countMes++;
+      });
+      document.getElementById('stat-hoje').textContent = countHoje;
+      document.getElementById('stat-mes').textContent = countMes;
+
+      if (!mostrandoLixeira) renderizarGrafico();
+      aplicarFiltros();
+    }
+
+    function limparTelefone(tel) {
+      return String(tel || '').replace(/\D/g, '');
+    }
+
+    function linkWhatsApp(tel) {
+      const num = limparTelefone(tel);
+      if (!num || num.length < 8) return null;
+      const comDDI = num.startsWith('55') ? num : '55' + num;
+      return `https://wa.me/${comDDI}`;
+    }
+
+    const STATUS_LABELS = { novo: 'Novo', andamento: 'Em andamento', concluido: 'Concluído', arquivado: 'Arquivado' };
+    const STATUS_CLASS = { novo: 'badge-novo', andamento: 'badge-andamento', concluido: 'badge-concluido', arquivado: 'badge-arquivado' };
+
+    function renderizarPedidos(pedidos) {
+      const lista = document.getElementById('pedidos-list');
+      const info = document.getElementById('resultados-info');
+      const admin = isAdmin();
+
+      if (!pedidos || pedidos.length === 0) {
+        lista.innerHTML = `
+          <div class="empty-state">
+            <p>${mostrandoLixeira ? 'Lixeira vazia' : 'Nenhum pedido encontrado'}</p>
+            <span>${mostrandoLixeira ? 'Itens excluídos aparecerão aqui.' : 'Envie um pedido pelo formulário do site.'}</span>
+          </div>`;
+        info.textContent = '0 itens';
+        return;
+      }
+
+      info.textContent = `${pedidos.length} item${pedidos.length !== 1 ? 's' : ''}`;
+
+      lista.innerHTML = pedidos.map(p => {
+        const status = p.status || 'novo';
+        const naoLido = !p.lido && !mostrandoLixeira;
+        const wa = linkWhatsApp(p.telefone);
+        return `
+        <div class="pedido-card ${naoLido ? 'nao-lido' : ''}">
+          <div class="pedido-header">
+            <div>
+              <div class="pedido-nome">${escapeHtml(p.nome || 'Sem nome')}</div>
+              <div class="pedido-data">${escapeHtml(p.data || '')}</div>
+            </div>
+            <div class="pedido-badges">
+              <span class="badge ${STATUS_CLASS[status] || 'badge-novo'}">${STATUS_LABELS[status] || 'Novo'}</span>
+              <span class="badge badge-servico">${escapeHtml(p.servico || '—')}</span>
+            </div>
+          </div>
+          <div class="pedido-grid">
+            <div class="pedido-field"><label>E-mail</label><p>${escapeHtml(p.email || '—')}</p></div>
+            <div class="pedido-field"><label>Telefone</label><p>${escapeHtml(p.telefone || '—')}</p></div>
+            <div class="pedido-field"><label>Serviço</label><p>${escapeHtml(p.servico || '—')}</p></div>
+          </div>
+          <div class="pedido-mensagem">
+            <div class="pedido-field"><label>Mensagem</label><p>${escapeHtml(p.mensagem || '—')}</p></div>
+          </div>
+          <div class="pedido-notas">
+            <div class="pedido-field">
+              <label>Notas internas</label>
+              <textarea class="nota-textarea" placeholder="Ex: já liguei..."
+                onblur="salvarNota(${p.id}, this)">${escapeHtml(p.nota || '')}</textarea>
+            </div>
+          </div>
+          <div class="pedido-actions">
+            ${!mostrandoLixeira && admin ? `
+              <select class="status-select" onchange="atualizarStatus(${p.id}, this.value)">
+                <option value="novo" ${status === 'novo' ? 'selected' : ''}>Novo</option>
+                <option value="andamento" ${status === 'andamento' ? 'selected' : ''}>Em andamento</option>
+                <option value="concluido" ${status === 'concluido' ? 'selected' : ''}>Concluído</option>
+                <option value="arquivado" ${status === 'arquivado' ? 'selected' : ''}>Arquivado</option>
+              </select>
+            ` : ''}
+            ${wa ? `<a class="btn-action btn-whatsapp" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+            ${naoLido ? `<button class="btn-action btn-lido" onclick="marcarComoLido(${p.id})">Marcar como lido</button>` : ''}
+            ${!mostrandoLixeira && admin ? `<button class="btn-action btn-delete" onclick="moverParaLixeira(${p.id})">Excluir</button>` : ''}
+            ${mostrandoLixeira && admin ? `
+              <button class="btn-action btn-restore" onclick="restaurarDaLixeira(${p.id})">Restaurar</button>
+              <button class="btn-action btn-delete" onclick="excluirDefinitivo(${p.id})">Excluir definitivo</button>
+            ` : ''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function exportarJSON() {
+      if (!isAdmin()) return;
+      baixarArquivo(localStorage.getItem(STORAGE_PEDIDOS) || '[]', 'pedidos.json', 'application/json');
+    }
+
+    function exportarCSV() {
+      if (!isAdmin()) return;
+      const pedidos = JSON.parse(localStorage.getItem(STORAGE_PEDIDOS) || '[]');
+      if (!pedidos.length) return alert('Nenhum pedido.');
+      const headers = ['ID','Nome','Email','Telefone','Servico','Mensagem','Data','Status','Lido','Nota'];
+      const rows = pedidos.map(p => [
+        p.id,
+        `"${String(p.nome||'').replace(/"/g,'""')}"`,
+        `"${String(p.email||'').replace(/"/g,'""')}"`,
+        `"${String(p.telefone||'').replace(/"/g,'""')}"`,
+        `"${String(p.servico||'').replace(/"/g,'""')}"`,
+        `"${String(p.mensagem||'').replace(/"/g,'""')}"`,
+        `"${String(p.data||'').replace(/"/g,'""')}"`,
+        p.status || 'novo',
+        p.lido ? 'Sim' : 'Não',
+        `"${String(p.nota||'').replace(/"/g,'""')}"`
+      ].join(','));
+      baixarArquivo([headers.join(','), ...rows].join('\n'), 'pedidos.csv', 'text/csv;charset=utf-8;');
+    }
+
+    function baixarArquivo(conteudo, nome, tipo) {
+      const blob = new Blob(['\ufeff' + conteudo], { type: tipo });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nome;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text == null ? '' : String(text);
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
